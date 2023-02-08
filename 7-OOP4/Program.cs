@@ -29,12 +29,12 @@ namespace OOP4
                 {
                     case CommandTakeСard:
                         deck.MixDeckCards();
-                        deck.TakeCardPlayer();
+                        deck.TakeCardUser();
                         break;
 
                     case CommandTakeСards:
                         deck.MixDeckCards();
-                        deck.TakeCardsPlayer();
+                        deck.TakeCardsUser();
                         break;
 
                     case CommandExit:
@@ -59,12 +59,12 @@ namespace OOP4
     class Deck
     {
         private List<Card> _cardDeck = new();
-        private List<Card> _playerDeck = new();
+        private List<Card> _userDeck = new();
 
         public Deck()
         {
             _cardDeck.Add(new Card("Two", "Diamonds"));
-            _cardDeck.Add(new Card("Three", "Spades")); 
+            _cardDeck.Add(new Card("Three", "Spades"));
             _cardDeck.Add(new Card("Four", "Hearts"));
             _cardDeck.Add(new Card("Five", "Clubs"));
             _cardDeck.Add(new Card("Six", "Diamonds"));
@@ -74,20 +74,20 @@ namespace OOP4
             _cardDeck.Add(new Card("Ten", "Diamonds"));
         }
 
-        public void TakeCardsPlayer()
+        public void TakeCardsUser()
         {
             Console.Write("\nСколько карт вам нужно: ");
             string userInput = Console.ReadLine();
 
-            bool isSuccess = int.TryParse(userInput, out int userNumber);
+            bool isSuccess = int.TryParse(userInput, out int cardInput);
 
-            for (int i = 0; i < userNumber; i++)
+            for (int i = 0; i < cardInput; i++)
             {
                 if (isSuccess)
                 {
                     if (0 >= 0 && 0 < _cardDeck.Count)
                     {
-                        _playerDeck.Add(_cardDeck[0]);
+                        _userDeck.Add(_cardDeck[0]);
                         _cardDeck.RemoveAt(0);
                     }
                     else
@@ -101,16 +101,16 @@ namespace OOP4
                 }
             }
 
-            Console.WriteLine($"\nВы взяли {_playerDeck.Count} карты.");
+            Console.WriteLine($"\nВы взяли {_userDeck.Count} карты.");
 
             ShowInfoPlayer();
         }
 
-        public void TakeCardPlayer()
+        public void TakeCardUser()
         {
             if (0 >= 0 && 0 < _cardDeck.Count)
             {
-                _playerDeck.Add(_cardDeck[0]);
+                _userDeck.Add(_cardDeck[0]);
                 _cardDeck.RemoveAt(0);
             }
             else
@@ -118,12 +118,12 @@ namespace OOP4
                 Console.WriteLine("\nВ колоде больше нет карт. Колода пуста.");
             }
 
-            Console.WriteLine($"\nВы взяли {_playerDeck.Count} карты.");
+            Console.WriteLine($"\nВы взяли {_userDeck.Count} карты.");
 
             ShowInfoPlayer();
         }
 
-        public void MixDeckCards() 
+        public void MixDeckCards()
         {
             for (int cards = _cardDeck.Count - 1; cards > 0; cards--)
             {
@@ -135,19 +135,19 @@ namespace OOP4
 
         public void ShowInfoPlayer()
         {
-            for (int i = 0; i < _playerDeck.Count; i++)
+            for (int i = 0; i < _userDeck.Count; i++)
             {
-                Console.WriteLine("Ваша карта - " + _playerDeck[i].Cards + ", " + _playerDeck[i].Value);
+                Console.WriteLine("Ваша карта - " + _userDeck[i].Cards + ", " + _userDeck[i].Value);
             }
         }
     }
 
     class Card
     {
-        public Card(string cardNumbers, string valuesСards)
+        public Card(string cardNumbers, string valueСards)
         {
             Cards = cardNumbers;
-            Value = valuesСards;
+            Value = valueСards;
         }
 
         public string Cards { get; private set; }
