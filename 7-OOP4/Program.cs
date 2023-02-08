@@ -101,8 +101,6 @@ namespace OOP4
                 }
             }
 
-            Console.WriteLine($"\nВы взяли {_userDeck.Count} карты.");
-
             ShowInfoPlayer();
         }
 
@@ -117,8 +115,6 @@ namespace OOP4
             {
                 Console.WriteLine("\nВ колоде больше нет карт. Колода пуста.");
             }
-
-            Console.WriteLine($"\nВы взяли {_userDeck.Count} карты.");
 
             ShowInfoPlayer();
         }
@@ -137,7 +133,7 @@ namespace OOP4
         {
             for (int i = 0; i < _userDeck.Count; i++)
             {
-                Console.WriteLine("Ваша карта - " + _userDeck[i].Cards + ", " + _userDeck[i].Value);
+                Console.WriteLine("\nВаша карта - " + _userDeck[i].Cards + ", " + _userDeck[i].Value);
             }
         }
     }
