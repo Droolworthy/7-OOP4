@@ -17,6 +17,8 @@ namespace OOP4
 
             ShowMenu();
 
+            deck.MixDeckCards();
+
             while (isWorking)
             {
                 Console.Write("\nВведите команду: ");
@@ -27,13 +29,11 @@ namespace OOP4
 
                 switch (userInput)
                 {
-                    case CommandTakeСard:
-                        deck.MixDeckCards();
+                    case CommandTakeСard:                       
                         deck.TakeCardUser();
                         break;
 
-                    case CommandTakeСards:
-                        deck.MixDeckCards();
+                    case CommandTakeСards:                  
                         deck.TakeCardsUser();
                         break;
 
