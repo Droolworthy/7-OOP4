@@ -85,13 +85,23 @@ namespace OOP4
             {
                 if (isSuccess)
                 {
-                    TakeCardUser();
+                    if (0 >= 0 && 0 < _cardDeck.Count)
+                    {
+                        _userDeck.Add(_cardDeck[0]);
+                        _cardDeck.RemoveAt(0);
+                    }
+                    else
+                    {
+                        Console.WriteLine("\nВ колоде больше нет карт. Колода пуста.");
+                    }
                 }
                 else
                 {
                     Console.WriteLine("Ошибка. Попробуйте ещё раз.");
                 }
             }
+
+            ShowInfoPlayer();
         }
 
         public void TakeCardUser()
