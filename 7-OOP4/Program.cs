@@ -29,11 +29,11 @@ namespace OOP4
 
                 switch (userInput)
                 {
-                    case CommandTakeСard:                       
+                    case CommandTakeСard:
                         deck.TakeCardUser();
                         break;
 
-                    case CommandTakeСards:                  
+                    case CommandTakeСards:
                         deck.TakeCardsUser();
                         break;
 
@@ -85,23 +85,13 @@ namespace OOP4
             {
                 if (isSuccess)
                 {
-                    if (0 >= 0 && 0 < _cardDeck.Count)
-                    {
-                        _userDeck.Add(_cardDeck[0]);
-                        _cardDeck.RemoveAt(0);
-                    }
-                    else
-                    {
-                        Console.WriteLine("\nВ колоде больше нет карт. Колода пуста.");
-                    }
+                    TakeCardUser();
                 }
                 else
                 {
                     Console.WriteLine("Ошибка. Попробуйте ещё раз.");
                 }
             }
-
-            ShowInfoPlayer();
         }
 
         public void TakeCardUser()
