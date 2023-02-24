@@ -167,7 +167,7 @@ namespace OOP4
                 return card; 
             }
 
-            return GetCardByIndex(index);
+            return _cardPack[index];
         }
 
         public int GetCardCount()
