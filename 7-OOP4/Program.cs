@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 
 namespace OOP4
 {
@@ -12,29 +11,30 @@ namespace OOP4
             const string CommandExit = "3";
 
             Deck deck = new();
+            Player player = new();
 
             bool isWorking = true;
 
             ShowMenu();
-
-            deck.MixDeckCards();
 
             while (isWorking)
             {
                 Console.Write("\nВведите команду: ");
                 string userInput = Console.ReadLine();
 
-                Console.Clear();
                 ShowMenu();
+                Console.Clear();
 
                 switch (userInput)
                 {
                     case CommandTakeСard:
-                        deck.TakeCardUser();
+                        deck.ShufflePackCards();
+                        player.TakeCardUser(deck);
                         break;
 
                     case CommandTakeСards:
-                        deck.TakeCardsUser();
+                        deck.ShufflePackCards();
+                        player.TakeCardsUser(deck);
                         break;
 
                     case CommandExit:
@@ -47,7 +47,7 @@ namespace OOP4
                 }
             }
 
-            static void ShowMenu()
+            void ShowMenu()
             {
                 Console.WriteLine($"{CommandTakeСard} - ВЗЯТЬ КАРТУ");
                 Console.WriteLine($"{CommandTakeСards} - ВЗЯТЬ НЕСКОЛЬКО КАРТ");
@@ -56,39 +56,42 @@ namespace OOP4
         }
     }
 
-    class Deck
+    class Player
     {
-        private List<Card> _cardDeck = new();
         private List<Card> _userDeck = new();
 
-        public Deck()
+        public void TakeCardUser(Deck deck)
         {
-            _cardDeck.Add(new Card("Two", "Diamonds"));
-            _cardDeck.Add(new Card("Three", "Spades"));
-            _cardDeck.Add(new Card("Four", "Hearts"));
-            _cardDeck.Add(new Card("Five", "Clubs"));
-            _cardDeck.Add(new Card("Six", "Diamonds"));
-            _cardDeck.Add(new Card("Seven", "Spades"));
-            _cardDeck.Add(new Card("Eight", "Hearts"));
-            _cardDeck.Add(new Card("Nine", "Clubs"));
-            _cardDeck.Add(new Card("Ten", "Diamonds"));
+            int index = 0;
+
+            if (index >= 0 && index < deck.GetCardCount())
+            {
+                _userDeck.Add(deck.GetCardByIndex(index));
+            }
+            else
+            {
+                Console.WriteLine("\nВ колоде больше нет карт. Колода пуста.");
+            }
+
+            ShowInfoPlayer();
         }
 
-        public void TakeCardsUser()
+        public void TakeCardsUser(Deck deck)
         {
             Console.Write("\nСколько карт вам нужно: ");
             string userInput = Console.ReadLine();
 
             bool isSuccess = int.TryParse(userInput, out int cardInput);
 
+            int index = 0;
+
             for (int i = 0; i < cardInput; i++)
             {
                 if (isSuccess)
                 {
-                    if (0 >= 0 && 0 < _cardDeck.Count)
+                    if (index >= 0 && index < deck.GetCardCount())
                     {
-                        _userDeck.Add(_cardDeck[0]);
-                        _cardDeck.RemoveAt(0);
+                        _userDeck.Add(deck.GetCardByIndex(index));
                     }
                     else
                     {
@@ -104,50 +107,92 @@ namespace OOP4
             ShowInfoPlayer();
         }
 
-        public void TakeCardUser()
-        {
-            if (0 >= 0 && 0 < _cardDeck.Count)
-            {
-                _userDeck.Add(_cardDeck[0]);
-                _cardDeck.RemoveAt(0);
-            }
-            else
-            {
-                Console.WriteLine("\nВ колоде больше нет карт. Колода пуста.");
-            }
-
-            ShowInfoPlayer();
-        }
-
-        public void MixDeckCards()
-        {
-            for (int cards = _cardDeck.Count - 1; cards > 0; cards--)
-            {
-                Random random = new();
-                int tempArray = random.Next(cards + 1);
-                (_cardDeck[cards], _cardDeck[tempArray]) = (_cardDeck[tempArray], _cardDeck[cards]);
-            }
-        }
-
         public void ShowInfoPlayer()
         {
-            for (int i = 0; i < _userDeck.Count; i++)
+            foreach (Card card in _userDeck)
             {
-                Console.WriteLine("\nВаша карта - " + _userDeck[i].Cards + ", " + _userDeck[i].Value);
+                Console.WriteLine("\nВы взяли карту: " + card);
             }
+        }
+    }
+
+    class Deck
+    {
+        private List<Card> _cardPack = new();
+        private string[] _suit = { "Clubs", "Spades", "Hearts", "Diamonds" };
+        private string[] _value = new string[] { "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "Кing", "Ace" };
+
+        public Deck()
+        {
+            for (int i = 0; i < _suit.Length; i++)
+            {
+                for (int j = 0; j < _value.Length; j++)
+                {
+                    _cardPack.Add(new Card(_suit, _value));
+                }
+            }
+        }
+
+        public void ShowInfoCards()
+        {
+            foreach (Card card in _cardPack)
+            {
+                Console.WriteLine("Колода карт: " + card);
+            }
+        }
+
+        public void ShufflePackCards()
+        {
+            Random random = new();
+
+            for (int cards = _value.Length - 1; cards >= 1; cards--)
+            {
+                int tempArraySuit = random.Next(cards + 1);
+                (_value[cards], _value[tempArraySuit]) = (_value[tempArraySuit], _value[cards]);
+            }
+
+            for (int cards = _suit.Length - 1; cards >= 1; cards--)
+            {
+                int tempArrayValue = random.Next(cards + 1);
+                (_suit[cards], _suit[tempArrayValue]) = (_suit[tempArrayValue], _suit[cards]);
+            }
+        }
+
+        public Card GetCardByIndex(int index)
+        {
+            if (index >= 0 && index < _cardPack.Count)
+            {
+                Card card = _cardPack[index];
+                _cardPack.Remove(card);
+                return card; 
+            }
+
+            return GetCardByIndex(index);
+        }
+
+        public int GetCardCount()
+        {
+            return _cardPack.Count;
         }
     }
 
     class Card
     {
-        public Card(string cardNumbers, string valueСards)
+        public Card(string[] cardNumbers, string[] valuesСards)
         {
-            Cards = cardNumbers;
-            Value = valueСards;
+            Suit = cardNumbers;
+            Value = valuesСards;
         }
 
-        public string Cards { get; private set; }
+        public string[] Suit { get; private set; }
 
-        public string Value { get; private set; }
+        public string[] Value { get; private set; }
+
+        public override string ToString()
+        {
+            string suitArray = string.Join(" ", Suit[0]);
+            string valueArray = string.Join(" ", Value[0]);
+            return suitArray + " " + valueArray;
+        }
     }
 }
