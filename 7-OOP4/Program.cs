@@ -115,8 +115,6 @@ namespace OOP4
     class Deck
     {
         private List<Card> _cardPack = new();
-        private string[] _suit = { "Clubs", "Spades", "Hearts", "Diamonds" };
-        private string[] _value = new string[] { "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "Кing", "Ace" };
 
         public Deck()
         {
@@ -161,11 +159,14 @@ namespace OOP4
 
         private void FillingPackCards()
         {
-            for (int i = 0; i < _suit.Length; i++)
+            string[] suits = { "Clubs", "Spades", "Hearts", "Diamonds" };
+            string[] values = new string[] { "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "Кing", "Ace" }; 
+
+            for (int i = 0; i < suits.Length; i++)
             {
-                for (int j = 0; j < _value.Length; j++)
+                for (int j = 0; j < values.Length; j++)
                 {
-                    _cardPack.Add(new Card(_suit, _value));
+                    _cardPack.Add(new Card(suits, values));
                 }
             }
         }
@@ -189,3 +190,5 @@ namespace OOP4
             string valueArray = string.Join(" ", Value[0]);
             return suitArray + " " + valueArray;
         }
+    }
+}
