@@ -8,33 +8,36 @@ namespace OOP4
         {
             const string CommandTakeСard = "1";
             const string CommandTakeСards = "2";
-            const string CommandExit = "3";
+            const string CommandShowСards = "3";
+            const string CommandExit = "4";
 
             Deck deck = new();
             Player player = new();
 
             bool isWorking = true;
 
-            ShowMenu();
+            Console.WriteLine($"{CommandTakeСard} - ВЗЯТЬ КАРТУ");
+            Console.WriteLine($"{CommandTakeСards} - ВЗЯТЬ НЕСКОЛЬКО КАРТ");
+            Console.WriteLine($"{CommandShowСards} - ПОКАЗАТЬ КАРТЫ ИГРОКА");
+            Console.WriteLine($"{CommandExit} - ВЫХОД");
 
             while (isWorking)
             {
                 Console.Write("\nВведите команду: ");
                 string userInput = Console.ReadLine();
 
-                ShowMenu();
-                Console.Clear();
-
                 switch (userInput)
                 {
                     case CommandTakeСard:
-                        deck.ShufflePackCards();
                         player.TakeCardUser(deck);
                         break;
 
                     case CommandTakeСards:
-                        deck.ShufflePackCards();
                         player.TakeCardsUser(deck);
+                        break;
+
+                    case CommandShowСards:
+                        player.ShowInfoPlayer();
                         break;
 
                     case CommandExit:
@@ -42,16 +45,9 @@ namespace OOP4
                         break;
 
                     default:
-                        Console.WriteLine($"\nВведите {CommandTakeСard}, {CommandTakeСards} или {CommandExit}");
+                        Console.WriteLine($"\nВведите {CommandTakeСard}, {CommandTakeСards}, {CommandShowСards} или {CommandExit}");
                         break;
                 }
-            }
-
-            void ShowMenu()
-            {
-                Console.WriteLine($"{CommandTakeСard} - ВЗЯТЬ КАРТУ");
-                Console.WriteLine($"{CommandTakeСards} - ВЗЯТЬ НЕСКОЛЬКО КАРТ");
-                Console.WriteLine($"{CommandExit} - ВЫХОД");
             }
         }
     }
@@ -62,9 +58,11 @@ namespace OOP4
 
         public void TakeCardUser(Deck deck)
         {
+            deck.ShufflePackCards();
+
             int index = 0;
 
-            if (index >= 0 && index < deck.GetCardCount())
+            if (index < deck.GetCardCount())
             {
                 _userDeck.Add(deck.GetCardByIndex(index));
             }
@@ -72,12 +70,12 @@ namespace OOP4
             {
                 Console.WriteLine("\nВ колоде больше нет карт. Колода пуста.");
             }
-
-            ShowInfoPlayer();
         }
 
         public void TakeCardsUser(Deck deck)
         {
+            deck.ShufflePackCards();
+
             Console.Write("\nСколько карт вам нужно: ");
             string userInput = Console.ReadLine();
 
@@ -103,8 +101,6 @@ namespace OOP4
                     Console.WriteLine("Ошибка. Попробуйте ещё раз.");
                 }
             }
-
-            ShowInfoPlayer();
         }
 
         public void ShowInfoPlayer()
@@ -124,13 +120,7 @@ namespace OOP4
 
         public Deck()
         {
-            for (int i = 0; i < _suit.Length; i++)
-            {
-                for (int j = 0; j < _value.Length; j++)
-                {
-                    _cardPack.Add(new Card(_suit, _value));
-                }
-            }
+            FillingPackCards();
         }
 
         public void ShowInfoCards()
@@ -145,16 +135,10 @@ namespace OOP4
         {
             Random random = new();
 
-            for (int cards = _value.Length - 1; cards >= 1; cards--)
+            for (int cards = _cardPack.Count - 1; cards >= 1; cards--)
             {
-                int tempArraySuit = random.Next(cards + 1);
-                (_value[cards], _value[tempArraySuit]) = (_value[tempArraySuit], _value[cards]);
-            }
-
-            for (int cards = _suit.Length - 1; cards >= 1; cards--)
-            {
-                int tempArrayValue = random.Next(cards + 1);
-                (_suit[cards], _suit[tempArrayValue]) = (_suit[tempArrayValue], _suit[cards]);
+                int tempListIndex = random.Next(cards + 1);
+                (_cardPack[cards], _cardPack[tempListIndex]) = (_cardPack[tempListIndex], _cardPack[cards]);
             }
         }
 
@@ -173,6 +157,17 @@ namespace OOP4
         public int GetCardCount()
         {
             return _cardPack.Count;
+        }
+
+        private void FillingPackCards()
+        {
+            for (int i = 0; i < _suit.Length; i++)
+            {
+                for (int j = 0; j < _value.Length; j++)
+                {
+                    _cardPack.Add(new Card(_suit, _value));
+                }
+            }
         }
     }
 
@@ -194,5 +189,3 @@ namespace OOP4
             string valueArray = string.Join(" ", Value[0]);
             return suitArray + " " + valueArray;
         }
-    }
-}
