@@ -163,7 +163,7 @@ namespace OOP4
         private void FillingPackCards()
         {
             string[] suits = { "Clubs", "Spades", "Hearts", "Diamonds" };
-            string[] values = new string[] { "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "Кing", "Ace" }; 
+            string[] values = { "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "Кing", "Ace" }; 
 
             for (int i = 0; i < suits.Length; i++)
             {
